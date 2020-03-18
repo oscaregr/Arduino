@@ -6,22 +6,25 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly: h = digitalRead(H);
-  byte secondValue = 7,result=12;
+  byte secondValue = 6,result=12;
   bool carry = LOW;
-  for(byte firstValue = 0;firstValue<7;firstValue++){
-     digitalWrite(result, LOW);
-    if(secondValue && carry && firstValue){
+  for(byte firstValue = 0;firstValue<6;firstValue++){
+    
+    if((digitalRead(secondValue) && carry && digitalRead(firstValue))){
       digitalWrite(result,HIGH);
       carry = HIGH;
     }
-    else if((secondValue && firstValue)||(firstValue && carry)||(carry && secondValue)){
+    else if((digitalRead(secondValue) && digitalRead(firstValue))||(digitalRead(firstValue) && carry)||(carry && digitalRead(secondValue))){
+      digitalWrite(result,LOW);
+      carry = HIGH;
+    }
+    else if((digitalRead(secondValue)) || (digitalRead(firstValue) || carry)){
       digitalWrite(result,HIGH);
       carry = LOW;
     }
-    else if(secondValue || firstValue || carry){
-      digitalWrite(result,HIGH);
-      carry = LOW;
-    }
+    else{ digitalWrite(result, LOW);}
+    if((firstValue == 5) && carry)digitalWrite(result+1, HIGH);
+    else if(firstValue == 5)digitalWrite(result+1, LOW);
     secondValue+=1;
     result+=1;
   }
